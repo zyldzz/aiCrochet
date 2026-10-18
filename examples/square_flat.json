@@ -1,0 +1,13 @@
+{
+  "shape": "square",
+  "colors": ["blue"],
+  "start": "foundation_chain",
+  "rows": [
+    { "no": 1, "stitches": [{ "type": "ch", "count": 10 }], "total": 10 },
+    { "no": 2, "stitches": [{ "type": "sc", "count": 10 }], "total": 10 },
+    { "no": 3, "stitches": [{ "type": "sc", "count": 10 }], "total": 10 },
+    { "no": 4, "stitches": [{ "type": "sc", "count": 10 }], "total": 10 },
+    { "no": 5, "stitches": [{ "type": "sc", "count": 10 }], "total": 10 }
+  ],
+  "source": "elle yazıldı"
+}

@@ -1,0 +1,33 @@
+{
+  "shape": "circle",
+  "colors": ["yellow"],
+  "start": "magic_ring",
+  "rows": [
+    { "no": 1, "stitches": [{ "type": "dc", "count": 12 }], "total": 12 },
+    {
+      "no": 2,
+      "stitches": [{ "type": "inc", "count": 1 }],
+      "repeat": 12,
+      "total": 24
+    },
+    {
+      "no": 3,
+      "stitches": [
+        { "type": "dc", "count": 1 },
+        { "type": "inc", "count": 1 }
+      ],
+      "repeat": 12,
+      "total": 36
+    },
+    {
+      "no": 4,
+      "stitches": [
+        { "type": "tr", "count": 2 },
+        { "type": "inc", "count": 1 }
+      ],
+      "repeat": 12,
+      "total": 48
+    }
+  ],
+  "source": "elle yazıldı"
+}
