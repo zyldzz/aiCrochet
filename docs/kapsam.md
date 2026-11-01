@@ -3,7 +3,7 @@
 ## 1. Kapsam
 
 Sistem, düz renkli yuvarlak ve düz (kare/dikdörtgen) tığ işi parçaların fotoğrafından
-sc, hdc, dc, tc, inc ve dec stitch'lerinden oluşan yazılı pattern ve görsel chart üretir.
+ch, sc, hdc, dc, tr, inc ve dec stitch'lerinden oluşan yazılı pattern ve görsel chart üretir.
 
 ## 2. Kapsam dışı (gelecek çalışma)
 
