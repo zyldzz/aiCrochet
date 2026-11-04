@@ -1,165 +1,76 @@
-import 'dart:io';
-import 'dart:ui' as ui;
-
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
 
-import 'result_page.dart';
+import '../models/pattern.dart';
+import '../services/pattern_loader.dart';
+import '../widgets/pattern_card.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.onCreateTap});
+
+  final VoidCallback onCreateTap;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final ImagePicker _picker = ImagePicker();
-  XFile? _image;
+  List<CrochetPattern> _patterns = [];
 
-  Future<String?> _validateImage(XFile file) async {
-    final ext = file.path.split(".").last.toLowerCase();
-
-    if (!["jpg", "jpeg", "png"].contains(ext)) {
-      return "Lütfen jpg, jpeg veya png formatında bir fotoğraf seçin.";
-    }
-
-    final bytes = await file.readAsBytes();
-
-    if (bytes.length > 10 * 1024 * 1024) {
-      return "Lütfen 10MB'den küçük bir fotoğraf seçin.";
-    }
-
-    try {
-      final codec = await ui.instantiateImageCodec(bytes);
-      final frame = await codec.getNextFrame();
-
-      final w = frame.image.width;
-      final h = frame.image.height;
-
-      frame.image.dispose();
-      codec.dispose();
-
-      if (w < 300 || h < 300) {
-        return "Lütfen en az 300x300 piksel boyutunda bir fotoğraf seçin.";
-      }
-    } catch (_) {
-      return "Fotoğraf okunamadı.";
-    }
-
-    return null;
+  @override
+  void initState() {
+    super.initState();
+    _loadPatterns();
   }
 
-  Future<void> _pickImage() async {
-    final picked = await _picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1024,
-      maxHeight: 1024,
-      imageQuality: 85,
-    );
-
-    if (picked == null) return;
-
-    final error = await _validateImage(picked);
+  Future<void> _loadPatterns() async {
+    final patterns = await loadSamplePatterns();
 
     if (!mounted) return;
 
-    if (error != null) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(error)));
-      return;
-    }
-
-    final cropped = await ImageCropper().cropImage(
-      sourcePath: picked.path,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-      uiSettings: [
-        AndroidUiSettings(
-          toolbarTitle: 'Fotoğrafı kırp',
-          lockAspectRatio: true,
-        ),
-      ],
-    );
-
-    if (cropped == null || !mounted) return;
-
     setState(() {
-      _image = XFile(cropped.path);
+      _patterns = patterns;
     });
-  }
-
-  void _clearImage() {
-    setState(() {
-      _image = null;
-    });
-  }
-
-  void _startAnalysis() {
-    if (_image == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Lütfen önce bir fotoğraf seçin.')),
-      );
-      return;
-    }
-
-    Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => ResultPage(imagePath: _image!.path),
-      ),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final hasImage = _image != null;
-
     return Scaffold(
       appBar: AppBar(title: const Text('StitchPal')),
-      body: Padding(
+      body: ListView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(
-              height: 250,
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 164, 16, 16),
-                  ),
-                  borderRadius: BorderRadius.circular(12),
+        children: [
+          Card(
+            child: InkWell(
+              onTap: widget.onCreateTap,
+              child: const Padding(
+                padding: EdgeInsets.all(24),
+                child: Column(
+                  children: [
+                    Icon(Icons.add_photo_alternate, size: 48),
+                    SizedBox(height: 8),
+                    Text(
+                      'Yeni pattern oluştur',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text('Tığ işi fotoğrafından pattern üret'),
+                  ],
                 ),
-                clipBehavior: Clip.antiAlias,
-                child: hasImage
-                    ? Image.file(File(_image!.path), fit: BoxFit.contain)
-                    : const Center(child: Text('Henüz fotoğraf seçilmedi')),
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            ElevatedButton(
-              onPressed: _pickImage,
-              child: Text(
-                hasImage ? 'Farklı fotoğraf seç' : 'Galeriden fotoğraf seç',
-              ),
-            ),
-
-            const SizedBox(height: 4),
-
-            if (hasImage)
-              ElevatedButton(
-                onPressed: _clearImage,
-                child: const Text('Fotoğrafı Temizle'),
-              ),
-
-            FilledButton(
-              onPressed: _startAnalysis,
-              child: const Text('Analizi Başlat'),
-            ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 24),
+          const Text(
+            'Örnek patternler',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 8),
+          for (final p in _patterns)
+            PatternCard(pattern: p, isLiked: false, onLikeTap: () {}),
+        ],
       ),
     );
   }
