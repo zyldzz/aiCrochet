@@ -103,8 +103,9 @@ class _HomePageState extends State<HomePage> {
       final h = frame.image.height;
       frame.image.dispose();
       codec.dispose();
-      if (w < 300 || h < 300)
+      if (w < 300 || h < 300) {
         return "Lütfen en az 300x300 piksel boyutunda bir fotoğraf seçin.";
+      }
     } catch (_) {
       return "fotoğraf okunamadı.";
     }

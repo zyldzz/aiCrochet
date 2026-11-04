@@ -27,3 +27,5 @@ class Pattern(BaseModel):
     notes: Optional[str] = None
     photo_quality: Optional[Quality] = None
     source: Optional[str] = None
+    image: Optional[str] = None          # örn. "circle01_a.jpg"
+    piece_id: Optional[str] = None       # örn. "circle01" (aynı parçanın fotoğrafları)

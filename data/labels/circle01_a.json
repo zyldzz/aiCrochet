@@ -1,0 +1,36 @@
+{
+  "image": "circle01_a.jpg",
+  "piece_id": "circle01",
+  "photo_quality": "good",
+  "source": "https://yarndrasil.com/how-to-crochet-a-flat-circle/",
+  "shape": "circle",
+  "colors": ["blue"],
+  "start": "magic_ring",
+  "rows": [
+    { "no": 1, "stitches": [{ "type": "sc", "count": 6 }], "total": 6 },
+    {
+      "no": 2,
+      "stitches": [{ "type": "inc", "count": 1 }],
+      "repeat": 6,
+      "total": 12
+    },
+    {
+      "no": 3,
+      "stitches": [
+        { "type": "sc", "count": 1 },
+        { "type": "inc", "count": 1 }
+      ],
+      "repeat": 6,
+      "total": 18
+    },
+    {
+      "no": 4,
+      "stitches": [
+        { "type": "sc", "count": 2 },
+        { "type": "inc", "count": 1 }
+      ],
+      "repeat": 6,
+      "total": 24
+    }
+  ]
+}
