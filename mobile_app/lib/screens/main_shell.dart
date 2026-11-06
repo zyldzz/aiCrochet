@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'create_page.dart';
 import 'home_page.dart';
+import 'profile_page.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -25,7 +26,7 @@ class _MainShellState extends State<MainShell> {
       ),
       const CreatePage(),
       const Center(child: Text('Kaydedilenler')),
-      const Center(child: Text('Profil')),
+      const ProfilePage(),
     ];
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: pages),
